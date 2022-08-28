@@ -1,4 +1,4 @@
-from apis.airtouch4 import packetmap
+from api import packetmap
 import asyncio
 import errno
 from socket import error as socket_error
