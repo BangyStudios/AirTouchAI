@@ -1,9 +1,3 @@
-[submodule "AirTouchAI-API"]
-	path = AirTouchAI-API
-	url = https://github.com/BangyStudios/AirTouchAI-API
-[submodule "api/AirTouchAI-API"]
-	path = api/AirTouchAI-API
-	url = https://github.com/BangyStudios/AirTouchAI-API
 [submodule "api/airtouch4"]
 	path = api/airtouch4
 	url = https://github.com/BangyStudios/AirTouchAI-API
