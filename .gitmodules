@@ -1,6 +1,0 @@
-[submodule "api/airtouch4"]
-	path = api/airtouch4
-	url = https://github.com/BangyStudios/AirTouchAI-API
-[submodule "api/enphase"]
-	path = api/enphase
-	url = https://github.com/BangyStudios/EnphaseEnvoyAPI
