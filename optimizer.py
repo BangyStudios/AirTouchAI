@@ -1,16 +1,21 @@
 import controller
-import solar
+import time
 
 controller = controller.Controller("192.168.0.14")
-solar_crawler = solar.Crawler()
-solar_calculator = solar.Calculator()
+mode_current = None
 
 while True:
-    solar.update_data()
-    if (solar_calculator.get_net(solar.get_data()) > 4000):
-        controller.set_mode_ac(0, "Cool")
-        controller.set_fan_ac("Auto")
-    elif (solar_calculator.get_net(solar.get_data()) < -1000):
-        controller.set_mode_ac(0, "Fan")
-    else:
-        pass
+    with open("/home/icb/Code/Enphase-Tools/data/temp.txt", "r") as solar_net:
+        power_net = int(solar_net.read())
+    if (power_net > 5000):
+        if (mode_current != "Cool"):
+            controller.set_mode_ac(0, "Cool")
+            controller.set_fan_ac(0, "Auto")
+            mode_current = "Cool"
+            print("Cool")
+    elif (power_net < -1000):
+        if (mode_current != "Fan"):
+            controller.set_mode_ac(0, "Fan")
+            mode_current = "Fan"
+            print("Fan")
+    time.sleep(10)
