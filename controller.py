@@ -1,5 +1,5 @@
 import asyncio
-from api.airtouch4pyapi import AirTouch
+from api import AirTouch
 """
 Creates a new Air Conditioner Controller object
 """
