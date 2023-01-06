@@ -1,21 +1,48 @@
 import controller
 import time
+import datetime
 
 controller = controller.Controller("192.168.0.14")
-mode_current = None
+# mode_current = None
+state_ac = True
+ac_current = 1
+time_ac_current = 0
 
 while True:
     with open("/home/icb/Code/Enphase-Tools/data/temp.txt", "r") as solar_net:
-        power_net = int(solar_net.read())
-    if (power_net > 5000):
-        if (mode_current != "Cool"):
-            controller.set_mode_ac(0, "Cool")
-            controller.set_fan_ac(0, "Auto")
-            mode_current = "Cool"
-            print("Cool")
-    elif (power_net < -1000):
-        if (mode_current != "Fan"):
-            controller.set_mode_ac(0, "Fan")
-            mode_current = "Fan"
-            print("Fan")
-    time.sleep(10)
+        try:
+            power_net = int(solar_net.read())
+        except (ValueError):
+            power_net = 0
+        solar_net.close()
+    if (power_net > 4000):
+        state_ac = True
+    elif (power_net < -2000):
+        state_ac = False
+    if (state_ac):
+        controller.set_power_ac(0, 1)
+        controller.set_power_ac(1, 1)
+        if (time_ac_current < 1200 and ac_current == 0):
+            controller.set_power_ac(0, 1)
+            controller.set_power_ac(1, 0)
+        if (time_ac_current >= 1200 and ac_current == 0):
+            ac_current = 1 # Change to AC1
+            time_ac_current = 0 # Reset time for AC0
+        if (time_ac_current < 600 and ac_current == 1):
+            controller.set_power_ac(0, 0)
+            controller.set_power_ac(1, 1)
+        if (time_ac_current >= 600 and ac_current == 1):
+            ac_current = 0 # Change to AC0
+            time_ac_current = 0 # Reset time for AC1
+    elif (not state_ac):
+        controller.set_power_ac(0, 0)
+        controller.set_power_ac(1, 0)
+        print(f"Off AC{ac_current} {time_ac_current / 60}min(s)")
+    if (state_ac):
+        if (ac_current == 0):
+            print(f"On AC0 {time_ac_current / 60}min(s)")
+            time_ac_current += 30
+        elif (ac_current == 1):
+            print(f"On AC1 {time_ac_current / 60}min(s)")
+            time_ac_current += 30
+    time.sleep(30)
