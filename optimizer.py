@@ -15,23 +15,23 @@ while True:
         except (ValueError):
             power_net = 0
         solar_net.close()
-    if (power_net > 4000):
+    if (power_net > 1000):
         state_ac = True
-    elif (power_net < -2000):
+    elif (power_net < -5000):
         state_ac = False
     if (state_ac):
         controller.set_power_ac(0, 1)
         controller.set_power_ac(1, 1)
-        if (time_ac_current < 1200 and ac_current == 0):
+        if (time_ac_current < 900 and ac_current == 0):
             controller.set_power_ac(0, 1)
             controller.set_power_ac(1, 0)
-        if (time_ac_current >= 1200 and ac_current == 0):
+        if (time_ac_current >= 900 and ac_current == 0):
             ac_current = 1 # Change to AC1
             time_ac_current = 0 # Reset time for AC0
-        if (time_ac_current < 600 and ac_current == 1):
+        if (time_ac_current < 900 and ac_current == 1):
             controller.set_power_ac(0, 0)
             controller.set_power_ac(1, 1)
-        if (time_ac_current >= 600 and ac_current == 1):
+        if (time_ac_current >= 900 and ac_current == 1):
             ac_current = 0 # Change to AC0
             time_ac_current = 0 # Reset time for AC1
     elif (not state_ac):
