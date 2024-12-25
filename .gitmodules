@@ -1,3 +1,6 @@
 [submodule "api"]
 	path = api
 	url = https://github.com/BangyStudios/AirTouchAI-API
+[submodule "src/lib/api"]
+	path = src/lib/api
+	url = https://github.com/BangyStudios/AirTouchAI-API
